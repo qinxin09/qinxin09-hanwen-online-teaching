@@ -1,0 +1,9 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: springcloud-consumer-8000
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848

@@ -1,0 +1,18 @@
+server:
+  port: 8500 #端口号
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://springcloud-user-manage-8100  # user-service是user模块的服务名
+          predicates:
+            - Path=/user/**
+#     该路由将匹配所有/user/**的请求，并将其转发到user-service服务。
+#     user模块里需要设置Cors
+#     在启动类上添加@EnableDiscoveryClient注解，以便网关应用可以通过注册中心（nacos）发现其他服务。 实际没有也可以

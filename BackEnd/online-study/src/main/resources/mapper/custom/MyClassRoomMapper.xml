@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yws.onlinestudymanage.dao.custom.MyClassRoomMapper">
+    <resultMap id="teacherCourseInfo" type="com.yws.onlinestudymanage.pojo.custom.MyClassRoom">
+        <id property="recordId" column="recordId"></id>
+        <result property="userId" column="userId" ></result>
+        <result property="classroomId" column="classroomId" ></result>
+        <result property="studyRecord" column="studyRecord" ></result>
+        <result property="joinDatetime" column="joinDatetime" ></result>
+
+        <result property="courseName" column="courseName" ></result>
+        <result property="courseId" column="courseId" ></result>
+        <result property="chapters" jdbcType="LONGVARCHAR" column="chapters" ></result>
+
+
+        <result property="classroomName" column="classroomName" ></result>
+        <result property="teacherName" column="teacherName" ></result>
+
+    </resultMap>
+
+    <select id="getMyClassRoomsByUserId" parameterType="java.lang.Long" resultMap="teacherCourseInfo">
+        SELECT
+            study_record.`record_id` AS recordId,
+            study_record.`user_id` AS userId,
+            study_record.`classroom_id` AS classroomId,
+            study_record.`study_record` AS studyRecord,
+            study_record.`join_datetime` AS joinDatetime,
+
+            course.`course_name` AS courseName,
+            course.`id` AS courseId,
+            course.`chapters` AS chapters,
+
+            classroom.`name` AS classroomName,
+
+            user.`name` AS teacherName
+
+        FROM study_record
+                 LEFT JOIN classroom ON study_record.`classroom_id` = classroom.`classroom_id`
+                 LEFT JOIN course ON classroom.`course_id` = course.`id`
+                 LEFT JOIN user ON classroom.`teacher_id` = user.`id`
+        WHERE study_record.`user_id`= #{id} ;
+    </select>
+
+    <select id="getCourseById" parameterType="java.lang.String" resultType="com.yws.onlinestudymanage.pojo.custom.MyCourse">
+        SELECT
+            course.works AS works,
+            course.chapters AS chapters,
+            course.id AS id,
+            course.`course_name` AS courseName,
+            course.`course_desc` AS courseDesc,
+            course.`teacher_id` AS teacherId
+        FROM course
+        WHERE course.id=#{courseId};
+    </select>
+
+    <select id="getTeacherById" parameterType="java.lang.Long" resultType="com.yws.onlinestudymanage.pojo.custom.MyTeacher">
+        SELECT
+            *
+        FROM user
+        WHERE user.id=#{teacherId};
+    </select>
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yws.coursemanage.dao.custom.MemberMapper">
+    <resultMap id="memberResultMap" type="com.yws.coursemanage.pojo.custom.Member">
+        <id property="id" column="id"></id>
+        <result property="name" column="name" ></result>
+        <result property="sex" column="sex" ></result>
+        <result property="phone" column="phone" ></result>
+        <result property="classroomId" column="classroomId" ></result>
+    </resultMap>
+
+    <select id="getMembersByClassroomId" parameterType="java.lang.String" resultMap="memberResultMap">
+        SELECT
+            user.id AS id,
+            user.name AS NAME,
+            user.sex AS sex,
+            user.phone AS phone,
+
+            study_record.`classroom_id` AS classroomId
+
+        FROM study_record
+        LEFT JOIN `user` ON study_record.`user_id` = `user`.id
+        WHERE study_record.`classroom_id`= #{classroomId} ;
+    </select>
+
+    <!--    <select id="checkClassRoomExistsByCourseIdTeacherId" parameterType="com.yws.coursemanage.pojo.ClassRoom">-->
+    <!--        SELECT * FROM classroom WHERE course_id=#{courseId} AND teacher_id=#{teacherId} LIMIT 1;-->
+    <!--    </select>-->
+    <!--    <insert id="createClassRoom" parameterType="com.yws.coursemanage.pojo.ClassRoom">-->
+    <!--        insert into -->
+    <!--    </insert>-->
+
+</mapper>

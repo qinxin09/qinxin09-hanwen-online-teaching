@@ -1,0 +1,74 @@
+@startuml
+!define ENTITY class
+
+' Define entities
+ENTITY classroom {
+  + classroom_id : VARCHAR(37)
+  + name : VARCHAR(20)
+  + members : INT
+  + course_id : VARCHAR(37)
+  + teacher_id : BIGINT(20)
+  --
+  + PRIMARY KEY (classroom_id)
+}
+
+ENTITY classroom_works {
+  + classroom_id : VARCHAR(37)
+  + work_id : VARCHAR(37)
+  --
+  + PRIMARY KEY (classroom_id, work_id)
+}
+
+ENTITY course {
+  + id : VARCHAR(37)
+  + course_name : VARCHAR(100)
+  + course_desc : VARCHAR(255)
+  + course_tag : VARCHAR(30)
+  + course_type : VARCHAR(30)
+  + teacher_id : BIGINT(20)
+  + start_date : DATE
+  + end_date : DATE
+  + chapters : TEXT
+  + works : TEXT
+  + answer : TEXT
+  --
+  + PRIMARY KEY (id)
+}
+
+ENTITY notice {
+  + course_id : VARCHAR(37)
+  + create_time : DATETIME
+  + content : VARCHAR(255)
+  + state : INT(1)
+  + id : VARCHAR(37)
+  + title : VARCHAR(50)
+}
+
+ENTITY study_record {
+  + record_id : VARCHAR(37)
+  + user_id : BIGINT(20)
+  + classroom_id : VARCHAR(37)
+  + study_record : TEXT
+  + join_datetime : DATETIME
+  --
+  + PRIMARY KEY (record_id)
+}
+
+ENTITY user {
+  + id : BIGINT(20)
+  + name : VARCHAR(20)
+  + age : INT(3)
+  + sex : INT(1)
+  + phone : VARCHAR(11)
+  + password : VARCHAR(32)
+  + role : INT(1)
+  --
+  + PRIMARY KEY (id)
+}
+
+' Define relationships
+classroom --|{ classroom_works
+course --|{ notice
+user --|{ study_record
+
+@enduml

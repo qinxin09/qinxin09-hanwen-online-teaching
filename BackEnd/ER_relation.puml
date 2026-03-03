@@ -1,0 +1,67 @@
+@startuml
+!define AWSPUML https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/v14.0/dist
+
+
+
+entity "classroom" as classroom {
+  +classroom_id : VARCHAR(37)
+  name : VARCHAR(20)
+  members : INT(4)
+  +course_id : VARCHAR(37)
+  +teacher_id : BIGINT(20)
+}
+
+entity "classroom_works" as classroom_works {
+  +classroom_id : VARCHAR(37)
+  +work_id : VARCHAR(37)
+}
+
+entity "course" as course {
+'  +id : VARCHAR(37)
+'  course_name : VARCHAR(100)
+'  course_desc : VARCHAR(255)
+'  course_tag : VARCHAR(30)
+'  course_type : VARCHAR(30)
+'  +teacher_id : BIGINT(20)
+'  start_date : DATE
+'  end_date : DATE
+'  chapters : TEXT
+'  works : TEXT
+'  answer : TEXT
+}
+
+entity "notice" as notice {
+  -course_id : VARCHAR(37)
+  create_time : DATETIME
+  content : VARCHAR(255)
+  state : INT(1)
+  +id : VARCHAR(37)
+  title : VARCHAR(50)
+}
+
+entity "study_record" as study_record {
+  +record_id : VARCHAR(37)
+  +user_id : BIGINT(20)
+  +classroom_id : VARCHAR(37)
+  study_record : TEXT
+  join_datetime : DATETIME
+}
+
+entity "user" as user {
+  +id : BIGINT(20)
+  name : VARCHAR(20)
+  age : INT(3)
+  sex : INT(1)
+  phone : VARCHAR(11)
+  password : VARCHAR(32)
+  role : INT(1)
+}
+
+classroom "n"--"1" course
+classroom_works "n"--"1" classroom
+notice "n"--"1" course
+study_record "n"--"1" user
+study_record "n"--"1" classroom
+
+
+@enduml

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yws.coursemanage.dao.custom.MyMapper">
+    <resultMap id="teacherCourseInfo" type="com.yws.coursemanage.pojo.custom.TeacherCourseInfo">
+        <id property="id" column="id"></id>
+        <result property="courseName" column="courseName" ></result>
+        <result property="courseDesc" column="courseDesc" ></result>
+        <result property="courseTag" column="courseTag" ></result>
+        <result property="courseType" column="courseType" ></result>
+        <result property="teacherId" column="teacherId" ></result>
+        <result property="startDate" column="startDate" ></result>
+        <result property="endDate" column="endDate" ></result>
+        <result property="chapters" column="chapters" ></result>
+        <result property="works" column="works" ></result>
+        <result property="answer" column="answer" ></result>
+
+        <collection property="classRoomList"
+                    ofType="com.yws.coursemanage.pojo.ClassRoom">
+            <id property="classroomId" column="classroomId" ></id>
+            <result property="name" column="classroomName" ></result>
+            <result  property="members" column="members"></result>
+            <result  property="courseId" column="courseId"></result>
+            <result  property="teacherId" column="classroomTeacherId"></result>
+        </collection>
+    </resultMap>
+
+<!--    多表联接查询 获取教师创建的所有课程以及班级-->
+    <select id="getTeacherCreateCourse" parameterType="java.lang.Long" resultMap="teacherCourseInfo">
+        SELECT
+            course.id AS id,
+            course.`course_name` AS courseName,
+            course.`course_desc` AS courseDesc,
+            course.`course_tag` AS courseTag,
+            course.`course_type` AS courseType,
+            course.`teacher_id` AS teacherId,
+            course.`start_date` AS startDate,
+            course.`end_date` AS endDate,
+            course.`chapters` AS chapters,
+            course.`works` AS works,
+            course.`answer` AS answer,
+
+            classroom.`classroom_id` AS classroomId,
+            classroom.`name` AS classroomName,
+            classroom.`members` AS members,
+            classroom.`course_id` AS courseId,
+            classroom.`teacher_id` AS classroomTeacherId
+
+        FROM course
+                 LEFT JOIN classroom ON course.id = classroom.`course_id`
+        WHERE course.`teacher_id`= #{id} ;
+    </select>
+
+    <resultMap id="userCoursesNotices" type="com.yws.coursemanage.pojo.custom.UserCoursesNotices">
+        <id property="id" column="id"></id>
+        <result property="courseId" column="courseId" ></result>
+        <result property="createTime" column="createTime" ></result>
+        <result property="content" column="content" ></result>
+        <result property="state" column="state" ></result>
+        <result property="title" column="title" ></result>
+        <result property="courseName" column="courseName" ></result>
+        <result property="classroomName" column="classroomName" ></result>
+    </resultMap>
+    <select id="getUserCoursesNotices" parameterType="java.lang.Long" resultMap="userCoursesNotices">
+        SELECT
+            notice.`course_id` AS courseId,
+            notice.`create_time` AS createTime,
+            notice.`content` AS content,
+            notice.`state` AS state,
+            notice.`id` AS id,
+            notice.`title` AS title,
+            course.`course_name` AS courseName,
+            classroom.`name` AS classroomName
+
+        FROM notice
+                 LEFT JOIN `classroom` ON classroom.`course_id`=notice.`course_id`
+                 LEFT JOIN study_record ON study_record.`classroom_id`=classroom.`classroom_id`
+                 LEFT JOIN `user` ON study_record.`user_id`=user.`id`
+                 LEFT JOIN course ON classroom.`course_id`=course.`id`
+
+        WHERE user.id=#{userId} AND notice.state=1;
+
+    </select>
+    <select id="getTeacherCoursesNotices" parameterType="java.lang.Long" resultMap="userCoursesNotices">
+        SELECT
+            notice.`course_id` AS courseId,
+            notice.`create_time` AS createTime,
+            notice.`content` AS content,
+            notice.`state` AS state,
+            notice.`id` AS id,
+            notice.`title` AS title,
+            course.`course_name` AS courseName
+
+        FROM notice
+            LEFT JOIN `course` ON course.`id`=notice.`course_id`
+            LEFT JOIN `user` ON course.`teacher_id`=user.`id`
+
+
+        WHERE user.id=#{userId} ;
+
+    </select>
+
+
+    <select id="selectClassroomWork" parameterType="com.yws.coursemanage.pojo.custom.ClassroomWorks" resultType="com.yws.coursemanage.pojo.custom.ClassroomWorks">
+        select classroom_id AS classroomId,work_id AS workId from classroom_works WHERE classroom_id=#{classroomId} AND work_id=#{workId}
+    </select>
+    <select id="getWorksByClassroomId" parameterType="java.lang.String" resultType="com.yws.coursemanage.pojo.custom.ClassroomWorks">
+            select classroom_id AS classroomId,work_id AS workId from classroom_works WHERE classroom_id=#{classroomId}
+    </select>
+    <!-- insert -->
+    <insert id="insertClassroomWork" parameterType="com.yws.coursemanage.pojo.custom.ClassroomWorks">
+        insert into classroom_works (classroom_id,work_id) values (#{classroomId},#{workId})
+    </insert>
+
+    <!-- delete -->
+    <delete id="deleteClassroomWork" parameterType="com.yws.coursemanage.pojo.custom.ClassroomWorks">
+        delete from classroom_works WHERE classroom_id=#{classroomId} AND work_id=#{workId}
+    </delete>
+    <!-- delete -->
+    <delete id="cleanClassroomWork" parameterType="java.lang.String">
+        delete from classroom_works WHERE work_id=#{workId}
+    </delete>
+</mapper>

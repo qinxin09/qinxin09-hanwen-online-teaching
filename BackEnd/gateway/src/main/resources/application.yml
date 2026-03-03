@@ -1,0 +1,25 @@
+server:
+  port: 8500 #端口号
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    gateway:
+      routes:
+        - id: user-service
+          uri: lb://springcloud-user-manage-8100  # springcloud-user-manage-8100是user模块的服务名
+          predicates:
+            - Path=/user/**
+
+#            - Path=/classroom/**
+#        - id: resource-service
+#          uri: lb://springcloud-resource-manage-8300
+#          predicates:
+#            - Path=/resource/**
+        - id: online-study-service
+          uri: lb://springcloud-online-study-8400
+          predicates:
+            - Path=/online-study/**

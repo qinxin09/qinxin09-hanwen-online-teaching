@@ -1,0 +1,43 @@
+# ---- 通用 ----
+.DS_Store
+Thumbs.db
+*.log
+logs/
+
+# ---- Node / 前端 ----
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-lock.yaml
+*.tsbuildinfo
+
+# Vue CLI / 构建产物
+dist/
+coverage/
+
+# ---- Java / Maven / 后端 ----
+target/
+*.iml
+*.class
+*.jar
+*.war
+*.ear
+.classpath
+.project
+.settings/
+
+# ---- IntelliJ IDEA / VSCode 等 IDE ----
+.idea/
+out/
+.vscode/
+
+# ---- 操作系统临时文件 ----
+~$*
+*.swp
+*.swo
+
+# ---- 本地配置 / 环境文件（如有）----
+.env
+.env.*.local
+
