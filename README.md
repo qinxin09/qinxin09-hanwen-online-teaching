@@ -2,6 +2,24 @@
 
 前后端分离的在线教学管理系统示例项目。
 
+课程班级![alt text](assets/image.png)
+
+发布作业/考试
+
+![image-20260303172851446](assets/image-20260303172851446.png)
+
+课程章节
+
+![alt text](assets/image-1.png)
+
+数据统计
+
+![image-20260303172503460](assets/image-20260303172503460.png)
+
+班级作业/考试
+
+![image-20260303172240552](assets/image-20260303172240552.png)
+
 ## 项目结构
 
 - `frontEnd/hanwen/`：前端（Vue 2 + Element UI）
@@ -60,7 +78,7 @@ CREATE DATABASE IF NOT EXISTS hanwenonline DEFAULT CHARSET utf8;
 ## 后端启动
 
 ### 1) 启动 Nacos
-
+`startup.cmd -m standalone`（默认端口 `8848`，如端口占用会自动调整）
 保证 Nacos 已在本机启动并监听 `8848`（各服务配置为 `spring.cloud.nacos.discovery.server-addr: localhost:8848`）。
 
 ### 2) 启动各微服务（推荐启动顺序）
@@ -132,3 +150,9 @@ npm run serve
 
 如需通过网关转发更多服务，可在 `BackEnd/gateway/src/main/resources/application.yml` 增加/启用对应路由。
 
+## 登录测试
+学生账号：18166950950
+密码：123456
+
+老师账号：18166950960
+密码：123456

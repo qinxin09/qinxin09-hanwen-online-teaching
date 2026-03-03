@@ -23,7 +23,7 @@ import java.util.Map;
 @RequestMapping("/resource")
 public class UploadController {
     // 设置文件存储目录
-    private static String UPLOAD_DIR = "F:/test/test/test3"; // 替换为实际的存储路径
+    private static String UPLOAD_DIR = "D:/F/test/test/test3"; // 替换为实际的存储路径
 
     // 定义文件分片存储方法
     private void storeChunk(byte[] chunk, String filename, int chunkIndex) throws IOException {
